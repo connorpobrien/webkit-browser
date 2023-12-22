@@ -23,7 +23,7 @@ struct ContentView: View {
                 }
             }
 
-            WebView(urlString: $urlString)
+            // WebView(urlString: $urlString)
 
             // Add buttons for Back, Forward, Refresh here
         }

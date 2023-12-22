@@ -8,16 +8,32 @@
 import SwiftUI
 import WebKit
 
+#if os(iOS)
 struct WebView: UIViewRepresentable {
-    @Binding var urlString: String
+    var url: URL
 
     func makeUIView(context: Context) -> WKWebView {
         return WKWebView()
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        if let url = URL(string: urlString) {
-            uiView.load(URLRequest(url: url))
-        }
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 }
+#endif
+
+#if os(macOS)
+struct WebView: NSViewRepresentable {
+    var url: URL
+
+    func makeNSView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
+
+    func updateNSView(_ webView: WKWebView, context: Context) {
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+}
+#endif
