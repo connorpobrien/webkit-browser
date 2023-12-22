@@ -11,29 +11,31 @@ import SwiftData
 
 struct ContentView: View {
     @State private var urlString: String = "http://www.apple.com"
+        @State private var url: URL = URL(string: "http://www.apple.com")!
 
-    var body: some View {
-        VStack {
-            HStack {
-                TextField("Enter URL", text: $urlString)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+        var body: some View {
+            VStack {
+                HStack {
+                    TextField("Enter URL", text: $urlString)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
 
-                Button("Go") {
-                    // Load the URL in WKWebView
+                    Button("Go") {
+                        reloadUrl()
+                    }
                 }
+
+                WebView(url: $url)
+                // Add buttons for Back, Forward, Refresh here
             }
+        }
 
-            if let url = URL(string: urlString) {
-                    WebView(url: url)
-                } else {
-                    Text("Invalid URL")
-                }
-
-            // Add buttons for Back, Forward, Refresh here
+        func reloadUrl() {
+            if let newUrl = URL(string: urlString) {
+                url = newUrl
+            }
         }
     }
-}
 
 
 #Preview {

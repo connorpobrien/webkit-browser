@@ -10,7 +10,7 @@ import WebKit
 
 #if os(iOS)
 struct WebView: UIViewRepresentable {
-    var url: URL
+    @Binding var url: URL
 
     func makeUIView(context: Context) -> WKWebView {
         return WKWebView()
@@ -25,7 +25,7 @@ struct WebView: UIViewRepresentable {
 
 #if os(macOS)
 struct WebView: NSViewRepresentable {
-    var url: URL
+    @Binding var url: URL
 
     func makeNSView(context: Context) -> WKWebView {
         return WKWebView()
