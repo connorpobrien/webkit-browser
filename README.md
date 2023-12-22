@@ -1,3 +1,3 @@
 ## WebKit Browser 
 
-Web browser powered by webkit. Includes basic browser functionality and tracks web performance metrics.  
+Simple web browser for macOS and iOS powered by webkit. Includes basic browser functionality and tracks web performance metrics.  
