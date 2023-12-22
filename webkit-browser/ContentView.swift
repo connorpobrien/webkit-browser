@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WebKit
 import SwiftData
 
 struct ContentView: View {
@@ -23,7 +24,11 @@ struct ContentView: View {
                 }
             }
 
-            // WebView(urlString: $urlString)
+            if let url = URL(string: urlString) {
+                    WebView(url: url)
+                } else {
+                    Text("Invalid URL")
+                }
 
             // Add buttons for Back, Forward, Refresh here
         }
