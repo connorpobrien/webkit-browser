@@ -17,38 +17,48 @@ import WebKit
 #endif
 
 struct WebView: View {
-    @Binding var urlString: String
+    @Binding var loadableURL: URL?
 
     var body: some View {
-        PlatformWebView(urlString: $urlString)
+        PlatformWebView(loadableURL: $loadableURL)
     }
 }
 
 #if os(iOS)
 struct PlatformWebView: UIViewRepresentable {
-    @Binding var urlString: String
+    @Binding var loadableURL: URL?
 
     func makeUIView(context: Context) -> WKWebView {
         WKWebView()
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        if let url = URL(string: urlString) {
+        // Only load the URL if it's non-nil
+        if let url = loadableURL {
             uiView.load(URLRequest(url: url))
+            // Reset the loadableURL to prevent reloading
+            DispatchQueue.main.async {
+                loadableURL = nil
+            }
         }
     }
 }
 #elseif os(macOS) || os(OSX)
 struct PlatformWebView: NSViewRepresentable {
-    @Binding var urlString: String
+    @Binding var loadableURL: URL?
 
     func makeNSView(context: Context) -> WKWebView {
         WKWebView()
     }
 
     func updateNSView(_ nsView: WKWebView, context: Context) {
-        if let url = URL(string: urlString) {
+        // Only load the URL if it's non-nil
+        if let url = loadableURL {
             nsView.load(URLRequest(url: url))
+            // After loading the URL, reset the loadableURL to prevent reloading
+            DispatchQueue.main.async {
+                self.loadableURL = nil
+            }
         }
     }
 }

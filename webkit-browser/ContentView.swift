@@ -11,34 +11,26 @@ import SwiftData
 
 struct ContentView: View {
     @State private var urlString: String = "https://www.apple.com"
+    @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
 
     var body: some View {
         VStack {
-            TextField("Enter URL", text: $urlString)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            HStack{
+                TextField("Enter URL", text: $urlString)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
 
-            Button("Go") {
-                // reload
+                Button("Go") {
+                    loadableURL = URL(string: urlString)
+                }
             }
+            .padding()
 
-            WebView(urlString: $urlString)
+            WebView(loadableURL: $loadableURL)
+            
             // Add buttons for Back, Forward, Refresh here
         }
     }
-    
-//    func reloadUrl() {
-//        if let newURL = URL(string: urlString) {
-//            urlString = newURL
-//        }
-//    }
 }
-
-
-//#Preview {
-//    ContentView()
-//        .modelContainer(for: Item.self, inMemory: true)
-//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
