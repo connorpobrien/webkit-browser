@@ -18,15 +18,17 @@ import WebKit
 
 struct WebView: View {
     @Binding var loadableURL: URL?
-
+    @Binding var zoomLevel: CGFloat
+    
     var body: some View {
-        PlatformWebView(loadableURL: $loadableURL)
+        PlatformWebView(loadableURL: $loadableURL, zoomLevel: $zoomLevel)
     }
 }
 
 #if os(iOS)
 struct PlatformWebView: UIViewRepresentable {
     @Binding var loadableURL: URL?
+    @Binding var zoomLevel: CGFloat   // not used for ios (yet?)
 
     func makeUIView(context: Context) -> WKWebView {
         WKWebView()
@@ -46,9 +48,11 @@ struct PlatformWebView: UIViewRepresentable {
 #elseif os(macOS) || os(OSX)
 struct PlatformWebView: NSViewRepresentable {
     @Binding var loadableURL: URL?
+    @Binding var zoomLevel: CGFloat
 
     func makeNSView(context: Context) -> WKWebView {
-        WKWebView()
+        let webView = WKWebView()
+        return webView
     }
 
     func updateNSView(_ nsView: WKWebView, context: Context) {
@@ -60,6 +64,7 @@ struct PlatformWebView: NSViewRepresentable {
                 self.loadableURL = nil
             }
         }
+        nsView.setMagnification(zoomLevel, centeredAt: CGPoint(x: nsView.bounds.midX, y: nsView.bounds.midY))
     }
 }
 #endif

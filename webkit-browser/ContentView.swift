@@ -12,6 +12,7 @@ import SwiftData
 struct ContentView: View {
     @State private var urlString: String = "https://www.apple.com"
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
+    @State private var zoomLevel: CGFloat = 1.0
 
     var body: some View {
         VStack {
@@ -25,10 +26,16 @@ struct ContentView: View {
                 Button("Go") {
                     loadWebPage()
                 }
+                Button("Zoom In") {
+                    zoomLevel += 0.1
+                }
+                Button("Zoom Out") {
+                    zoomLevel -= 0.1
+                }
             }
             .padding()
 
-            WebView(loadableURL: $loadableURL)
+            WebView(loadableURL: $loadableURL, zoomLevel: $zoomLevel)
             
             // Add buttons for Back, Forward, Refresh here
         }
