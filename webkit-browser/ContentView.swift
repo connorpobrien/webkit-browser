@@ -18,32 +18,34 @@ struct ContentView: View {
         VStack {
             HStack{
                 Button(action: {
-                    // Back action
-                }) {
-                    Image(systemName: "arrow.left")
-                }.frame(width: 25)
+                        // Back action
+                    }) {
+                        Image(systemName: "arrow.left").imageScale(.medium)
+                }
                 
                 Button(action: {
                         // Forward action
                     }) {
-                        Image(systemName: "arrow.right")
-                    }.frame(width: 25)
+                        Image(systemName: "arrow.right").imageScale(.medium)
+                }
                 
                 Button(action: {
                         loadWebPage()
                     }) {
-                        Image(systemName: "arrow.clockwise")
-                    }.frame(width: 25)
+                        Image(systemName: "arrow.clockwise").imageScale(.medium)
+                }
+                
+                Spacer().frame(width: 10)
                 
                 TextField("Enter URL", text: $urlString)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .onSubmit {
                         loadWebPage()
-                    }.frame(minWidth: 0, maxWidth: .infinity)
+                }.frame(minWidth: 0, maxWidth: .infinity)
                 
                 Button("Go") {
                     loadWebPage()
-                }.frame(width:50)
+                }
                 
                 Menu {
                     Button("Zoom In") {
