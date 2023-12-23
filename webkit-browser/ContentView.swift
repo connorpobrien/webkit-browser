@@ -21,17 +21,24 @@ struct ContentView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .onSubmit {
                         loadWebPage()
-                    }
+                    }.frame(minWidth: 0, maxWidth: .infinity)
 
+                Spacer()
+                
                 Button("Go") {
                     loadWebPage()
-                }
-                Button("Zoom In") {
-                    zoomLevel += 0.1
-                }
-                Button("Zoom Out") {
-                    zoomLevel -= 0.1
-                }
+                }.frame(width:50)
+                
+                Menu {
+                    Button("Zoom In") {
+                        zoomLevel += 0.1
+                    }
+                    Button("Zoom Out") {
+                        zoomLevel -= 0.1
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }.frame(width:50)
             }
             .padding()
 
