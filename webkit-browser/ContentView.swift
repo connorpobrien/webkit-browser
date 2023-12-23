@@ -10,35 +10,39 @@ import WebKit
 import SwiftData
 
 struct ContentView: View {
-    @State private var urlString: String = "http://www.apple.com"
-        @State private var url: URL = URL(string: "http://www.apple.com")!
+    @State private var urlString: String = "https://www.apple.com"
 
-        var body: some View {
-            VStack {
-                HStack {
-                    TextField("Enter URL", text: $urlString)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
+    var body: some View {
+        VStack {
+            TextField("Enter URL", text: $urlString)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
 
-                    Button("Go") {
-                        reloadUrl()
-                    }
-                }
-
-                WebView(url: $url)
-                // Add buttons for Back, Forward, Refresh here
+            Button("Go") {
+                // reload
             }
-        }
 
-        func reloadUrl() {
-            if let newUrl = URL(string: urlString) {
-                url = newUrl
-            }
+            WebView(urlString: $urlString)
+            // Add buttons for Back, Forward, Refresh here
         }
     }
-
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+    
+//    func reloadUrl() {
+//        if let newURL = URL(string: urlString) {
+//            urlString = newURL
+//        }
+//    }
 }
+
+
+//#Preview {
+//    ContentView()
+//        .modelContainer(for: Item.self, inMemory: true)
+//}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+

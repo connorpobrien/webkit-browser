@@ -9,31 +9,47 @@ import SwiftUI
 import WebKit
 
 #if os(iOS)
-struct WebView: UIViewRepresentable {
-    @Binding var url: URL
-
-    func makeUIView(context: Context) -> WKWebView {
-        return WKWebView()
-    }
-
-    func updateUIView(_ webView: WKWebView, context: Context) {
-        let request = URLRequest(url: url)
-        webView.load(request)
-    }
-}
+    import UIKit
+    typealias PlatformView = UIView
+#elseif os(macOS)
+    import AppKit
+    typealias PlatformView = NSView
 #endif
 
-#if os(macOS)
-struct WebView: NSViewRepresentable {
-    @Binding var url: URL
+struct WebView: View {
+    @Binding var urlString: String
 
-    func makeNSView(context: Context) -> WKWebView {
-        return WKWebView()
+    var body: some View {
+        PlatformWebView(urlString: $urlString)
+    }
+}
+
+#if os(iOS)
+struct PlatformWebView: UIViewRepresentable {
+    @Binding var urlString: String
+
+    func makeUIView(context: Context) -> WKWebView {
+        WKWebView()
     }
 
-    func updateNSView(_ webView: WKWebView, context: Context) {
-        let request = URLRequest(url: url)
-        webView.load(request)
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        if let url = URL(string: urlString) {
+            uiView.load(URLRequest(url: url))
+        }
+    }
+}
+#elseif os(macOS) || os(OSX)
+struct PlatformWebView: NSViewRepresentable {
+    @Binding var urlString: String
+
+    func makeNSView(context: Context) -> WKWebView {
+        WKWebView()
+    }
+
+    func updateNSView(_ nsView: WKWebView, context: Context) {
+        if let url = URL(string: urlString) {
+            nsView.load(URLRequest(url: url))
+        }
     }
 }
 #endif
