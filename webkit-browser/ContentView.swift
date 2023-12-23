@@ -18,9 +18,12 @@ struct ContentView: View {
             HStack{
                 TextField("Enter URL", text: $urlString)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .onSubmit {
+                        loadWebPage()
+                    }
 
                 Button("Go") {
-                    loadableURL = URL(string: urlString)
+                    loadWebPage()
                 }
             }
             .padding()
@@ -30,6 +33,14 @@ struct ContentView: View {
             // Add buttons for Back, Forward, Refresh here
         }
     }
+    
+    private func loadWebPage() {
+        if let encodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let url = URL(string: encodedString) {
+            loadableURL = url
+        }
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
