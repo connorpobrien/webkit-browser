@@ -17,13 +17,29 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack{
+                Button(action: {
+                    // Back action
+                }) {
+                    Image(systemName: "arrow.left")
+                }.frame(width: 25)
+                
+                Button(action: {
+                        // Forward action
+                    }) {
+                        Image(systemName: "arrow.right")
+                    }.frame(width: 25)
+                
+                Button(action: {
+                        loadWebPage()
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                    }.frame(width: 25)
+                
                 TextField("Enter URL", text: $urlString)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .onSubmit {
                         loadWebPage()
                     }.frame(minWidth: 0, maxWidth: .infinity)
-
-                Spacer()
                 
                 Button("Go") {
                     loadWebPage()
@@ -39,12 +55,10 @@ struct ContentView: View {
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }.frame(width:50)
-            }
-            .padding()
+            }.padding()
 
+            // main call to load webpage
             WebView(loadableURL: $loadableURL, zoomLevel: $zoomLevel)
-            
-            // Add buttons for Back, Forward, Refresh here
         }
     }
     
