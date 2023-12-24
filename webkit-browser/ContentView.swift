@@ -58,12 +58,12 @@ struct ContentView: View {
     }
     
     private func loadWebPage() {
-        // Check if the urlString is a valid URL
-        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
-            // It's a valid URL, so load it
-            loadableURL = url
+        // Check if the input is likely a URL or a search query
+        if urlString.contains(".") && !urlString.contains(" ") {
+            let formattedURLString = urlString.hasPrefix("http://") || urlString.hasPrefix("https://") ? urlString : "https://" + urlString
+            loadableURL = URL(string: formattedURLString)
         } else {
-            // It's not a valid URL, so perform a Google search
+            // Likely a search query, so perform a Google search
             let searchQuery = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             let searchURLString = "https://www.google.com/search?q=\(searchQuery)"
             loadableURL = URL(string: searchURLString)
