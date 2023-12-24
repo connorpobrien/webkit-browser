@@ -46,3 +46,4 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
         canGoForward = webView.canGoForward
     }
 }
+

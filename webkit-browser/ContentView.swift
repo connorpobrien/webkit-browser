@@ -69,7 +69,6 @@ struct ContentView: View {
             loadableURL = URL(string: searchURLString)
         }
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -78,3 +77,14 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+// TODO:
+// fix scaling for macos
+// performance metrics page
+// bookmarks
+// homepage
+// custom themes / colors / effects
+// individual user sign in
+// additional tabs
+// translation feature
+// Resource Inspector: A tool for developers to inspect web page elements, scripts, network requests, and more.
+// Automated testing tool
