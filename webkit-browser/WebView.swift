@@ -17,51 +17,50 @@ import WebKit
 #endif
 
 struct WebView: View {
+    @ObservedObject var webViewStateModel: WebViewStateModel
     @Binding var loadableURL: URL?
     @Binding var zoomLevel: CGFloat
-    
+
     var body: some View {
-        PlatformWebView(loadableURL: $loadableURL, zoomLevel: $zoomLevel)
+        PlatformWebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, zoomLevel: $zoomLevel)
     }
 }
 
 #if os(iOS)
 struct PlatformWebView: UIViewRepresentable {
+    var webViewStateModel: WebViewStateModel
     @Binding var loadableURL: URL?
-    @Binding var zoomLevel: CGFloat   // not used for ios (yet?)
+    @Binding var zoomLevel: CGFloat // not used (yet?)
 
     func makeUIView(context: Context) -> WKWebView {
-        WKWebView()
+        webViewStateModel.webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        // Only load the URL if it's non-nil
-        if let url = loadableURL {
+        if let url = loadableURL, uiView.url != url {
             uiView.load(URLRequest(url: url))
-            // Reset the loadableURL to prevent reloading
             DispatchQueue.main.async {
-                loadableURL = nil
+                self.loadableURL = nil // Reset the loadableURL to prevent reloading
             }
         }
+        // Implement zooming for ios
     }
 }
-#elseif os(macOS) || os(OSX)
+#elseif os(macOS)
 struct PlatformWebView: NSViewRepresentable {
+    var webViewStateModel: WebViewStateModel
     @Binding var loadableURL: URL?
     @Binding var zoomLevel: CGFloat
 
     func makeNSView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        return webView
+        webViewStateModel.webView
     }
 
     func updateNSView(_ nsView: WKWebView, context: Context) {
-        // Only load the URL if it's non-nil
-        if let url = loadableURL {
+        if let url = loadableURL, nsView.url != url {
             nsView.load(URLRequest(url: url))
-            // After loading the URL, reset the loadableURL to prevent reloading
             DispatchQueue.main.async {
-                self.loadableURL = nil
+                self.loadableURL = nil // Reset the loadableURL to prevent reloading
             }
         }
         nsView.setMagnification(zoomLevel, centeredAt: CGPoint(x: nsView.bounds.midX, y: nsView.bounds.midY))

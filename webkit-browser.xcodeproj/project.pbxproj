@@ -16,6 +16,7 @@
 		BEE4D1282B3581BC00026001 /* webkit_browserUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE4D1272B3581BC00026001 /* webkit_browserUITestsLaunchTests.swift */; };
 		BEE4D16D2B363E4F00026001 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE4D16C2B363E4F00026001 /* WebView.swift */; };
 		BEE4D16F2B36B16800026001 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE4D16E2B36B16800026001 /* Item.swift */; };
+		BEE4D1712B37BAFB00026001 /* WebViewStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE4D1702B37BAFB00026001 /* WebViewStateModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		BEE4D1272B3581BC00026001 /* webkit_browserUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = webkit_browserUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		BEE4D16C2B363E4F00026001 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		BEE4D16E2B36B16800026001 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = ../../../.Trash/Item.swift; sourceTree = "<group>"; };
+		BEE4D1702B37BAFB00026001 /* WebViewStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		BEE4D1062B3581B900026001 /* webkit-browser */ = {
 			isa = PBXGroup;
 			children = (
+				BEE4D1702B37BAFB00026001 /* WebViewStateModel.swift */,
 				BEE4D16E2B36B16800026001 /* Item.swift */,
 				BEE4D16C2B363E4F00026001 /* WebView.swift */,
 				BEE4D1072B3581B900026001 /* webkit_browserApp.swift */,
@@ -266,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEE4D16F2B36B16800026001 /* Item.swift in Sources */,
+				BEE4D1712B37BAFB00026001 /* WebViewStateModel.swift in Sources */,
 				BEE4D10A2B3581B900026001 /* ContentView.swift in Sources */,
 				BEE4D16D2B363E4F00026001 /* WebView.swift in Sources */,
 				BEE4D1082B3581B900026001 /* webkit_browserApp.swift in Sources */,
