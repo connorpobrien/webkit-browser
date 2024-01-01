@@ -13,9 +13,10 @@ struct ContentView: View {
     @State private var urlString: String = "https://www.apple.com"
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
     @State private var pageZoom: CGFloat = 0.7
+    @State private var homeURL: String = "https://www.apple.com"
+    @State private var isEditingHomeURL: Bool = false
+    @State private var newHomeURL: String = ""
     @StateObject private var webViewStateModel = WebViewStateModel()
-    
-    let homepageURL = "https://www.apple.com"
 
     var body: some View {
         VStack {
@@ -57,10 +58,20 @@ struct ContentView: View {
                         pageZoom = newZoom
                         webViewStateModel.setZoom(newZoom)
                     }
+                    Button("Change Home URL") {
+                        isEditingHomeURL = true
+                        newHomeURL = homeURL
+                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }.frame(width:50)
             }.padding()
+            
+            if isEditingHomeURL {
+                TextField("Enter new home URL", text: $newHomeURL, onCommit: updateHomeURL)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+            }
 
             // main call to load webpage
             WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
@@ -68,9 +79,16 @@ struct ContentView: View {
     }
     
     private func goToHomePage() {
-        if let url = URL(string: homepageURL) {
+        if let url = URL(string: homeURL) {
             loadableURL = url
         }
+    }
+    
+    private func updateHomeURL() {
+        if let url = URL(string: newHomeURL) {
+            homeURL = newHomeURL
+        }
+        isEditingHomeURL = false
     }
     
     private func loadWebPage() {
@@ -95,7 +113,6 @@ struct ContentView_Previews: PreviewProvider {
 // TODO:
 // performance metrics page
 // bookmarks
-// homepage
 // custom themes / colors / effects
 // individual user sign in
 // additional tabs
