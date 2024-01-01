@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
     @State private var pageZoom: CGFloat = 0.7
     @StateObject private var webViewStateModel = WebViewStateModel()
+    
+    let homepageURL = "https://www.apple.com"
 
     var body: some View {
         VStack {
@@ -28,6 +30,10 @@ struct ContentView: View {
                 
                 Button(action: webViewStateModel.reload) {
                     Image(systemName: "arrow.clockwise").imageScale(.medium)
+                }
+                
+                Button(action: goToHomePage) {
+                    Image(systemName: "house").imageScale(.medium)
                 }
                 
                 Spacer().frame(width: 10)
@@ -61,6 +67,12 @@ struct ContentView: View {
         }
     }
     
+    private func goToHomePage() {
+        if let url = URL(string: homepageURL) {
+            loadableURL = url
+        }
+    }
+    
     private func loadWebPage() {
         // Check if the input is likely a URL or a search query
         if urlString.contains(".") && !urlString.contains(" ") {
@@ -81,7 +93,6 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 // TODO:
-// fix scaling for macos
 // performance metrics page
 // bookmarks
 // homepage
@@ -91,3 +102,8 @@ struct ContentView_Previews: PreviewProvider {
 // translation feature
 // Resource Inspector: A tool for developers to inspect web page elements, scripts, network requests, and more.
 // Automated testing tool
+// Reader Mode: Implement a reader mode that strips away clutter like ads and popups from web pages, presenting users with clean, readable text. WebKit can help parse and render content in a reader-friendly format.
+
+// JavaScript Console: Integrate a JavaScript console for advanced users or developers. This would allow users to run JavaScript commands directly on the current web page.
+
+// Web Animations API: Utilize WebKit's support for the Web Animations API to create interactive, animated user interfaces.
