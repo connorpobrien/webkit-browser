@@ -35,7 +35,7 @@ struct ContentView: View {
                 }
                 
                 Button(action: goToHomePage) {
-                    Image(systemName: "house").imageScale(.medium)
+                    Image(systemName: "house").imageScale(.medium).foregroundColor(accentColor)
                 }
                 
                 Spacer().frame(width: 10)
