@@ -40,10 +40,14 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.load(request)
     }
 
-    // WKNavigationDelegate method
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward
+    }
+    
+    func setZoom(_ zoom: CGFloat) {
+        webView.pageZoom = zoom
+        webView.reload()
     }
 }
 

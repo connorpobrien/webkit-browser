@@ -12,7 +12,7 @@ import SwiftData
 struct ContentView: View {
     @State private var urlString: String = "https://www.apple.com"
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
-    @State private var pageZoom: CGFloat = 0.4
+    @State private var pageZoom: CGFloat = 0.7
     @StateObject private var webViewStateModel = WebViewStateModel()
 
     var body: some View {
@@ -42,10 +42,14 @@ struct ContentView: View {
                 
                 Menu {
                     Button("Zoom In") {
-                        pageZoom += 0.1
+                        let newZoom = pageZoom + 0.1
+                        pageZoom = newZoom
+                        webViewStateModel.setZoom(newZoom)
                     }
                     Button("Zoom Out") {
-                        pageZoom -= 0.1
+                        let newZoom = pageZoom - 0.1
+                        pageZoom = newZoom
+                        webViewStateModel.setZoom(newZoom)
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
