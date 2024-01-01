@@ -19,10 +19,10 @@ import WebKit
 struct WebView: View {
     @ObservedObject var webViewStateModel: WebViewStateModel
     @Binding var loadableURL: URL?
-    @Binding var zoomLevel: CGFloat
+    @Binding var pageZoom: CGFloat
 
     var body: some View {
-        PlatformWebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, zoomLevel: $zoomLevel)
+        PlatformWebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
     }
 }
 
@@ -30,10 +30,11 @@ struct WebView: View {
 struct PlatformWebView: UIViewRepresentable {
     var webViewStateModel: WebViewStateModel
     @Binding var loadableURL: URL?
-    @Binding var zoomLevel: CGFloat // not used (yet?)
+    @Binding var pageZoom: CGFloat // not used (yet?)
 
     func makeUIView(context: Context) -> WKWebView {
-        webViewStateModel.webView
+        let webview = webViewStateModel.webView
+        return webview
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
@@ -50,10 +51,12 @@ struct PlatformWebView: UIViewRepresentable {
 struct PlatformWebView: NSViewRepresentable {
     var webViewStateModel: WebViewStateModel
     @Binding var loadableURL: URL?
-    @Binding var zoomLevel: CGFloat
+    @Binding var pageZoom: CGFloat
 
     func makeNSView(context: Context) -> WKWebView {
-        webViewStateModel.webView
+        let webView = webViewStateModel.webView
+        webView.pageZoom = pageZoom
+        return webView
     }
 
     func updateNSView(_ nsView: WKWebView, context: Context) {
@@ -63,7 +66,7 @@ struct PlatformWebView: NSViewRepresentable {
                 self.loadableURL = nil // Reset the loadableURL to prevent reloading
             }
         }
-        nsView.setMagnification(zoomLevel, centeredAt: CGPoint(x: nsView.bounds.midX, y: nsView.bounds.midY))
+        nsView.pageZoom = pageZoom // Update page zoom
     }
 }
 #endif

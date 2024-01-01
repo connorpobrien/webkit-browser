@@ -12,7 +12,7 @@ import SwiftData
 struct ContentView: View {
     @State private var urlString: String = "https://www.apple.com"
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
-    @State private var zoomLevel: CGFloat = 1.0
+    @State private var pageZoom: CGFloat = 0.4
     @StateObject private var webViewStateModel = WebViewStateModel()
 
     var body: some View {
@@ -42,10 +42,10 @@ struct ContentView: View {
                 
                 Menu {
                     Button("Zoom In") {
-                        zoomLevel += 0.1
+                        pageZoom += 0.1
                     }
                     Button("Zoom Out") {
-                        zoomLevel -= 0.1
+                        pageZoom -= 0.1
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -53,7 +53,7 @@ struct ContentView: View {
             }.padding()
 
             // main call to load webpage
-            WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, zoomLevel: $zoomLevel)
+            WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
         }
     }
     
@@ -63,7 +63,6 @@ struct ContentView: View {
             let formattedURLString = urlString.hasPrefix("http://") || urlString.hasPrefix("https://") ? urlString : "https://" + urlString
             loadableURL = URL(string: formattedURLString)
         } else {
-            // Likely a search query, so perform a Google search
             let searchQuery = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             let searchURLString = "https://www.google.com/search?q=\(searchQuery)"
             loadableURL = URL(string: searchURLString)
