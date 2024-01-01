@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var homeURL: String = "https://www.apple.com"
     @State private var isEditingHomeURL: Bool = false
     @State private var newHomeURL: String = ""
+    @State private var accentColor: Color = .blue
     @StateObject private var webViewStateModel = WebViewStateModel()
 
     var body: some View {
@@ -62,6 +63,13 @@ struct ContentView: View {
                         isEditingHomeURL = true
                         newHomeURL = homeURL
                     }
+                    Button("Change Accent Color") {
+                        accentColor = Color(
+                            red: .random(in: 0...1),
+                            green: .random(in: 0...1),
+                            blue: .random(in: 0...1)
+                        )
+                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }.frame(width:50)
@@ -75,7 +83,7 @@ struct ContentView: View {
 
             // main call to load webpage
             WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
-        }
+        }.accentColor(accentColor)
     }
     
     private func goToHomePage() {
@@ -85,7 +93,7 @@ struct ContentView: View {
     }
     
     private func updateHomeURL() {
-        if let url = URL(string: newHomeURL) {
+        if URL(string: newHomeURL) != nil {
             homeURL = newHomeURL
         }
         isEditingHomeURL = false
@@ -113,14 +121,13 @@ struct ContentView_Previews: PreviewProvider {
 // TODO:
 // performance metrics page
 // bookmarks
-// custom themes / colors / effects
+// custom themes / colors / effects (dark mode, colors)
 // individual user sign in
 // additional tabs
 // translation feature
 // Resource Inspector: A tool for developers to inspect web page elements, scripts, network requests, and more.
 // Automated testing tool
 // Reader Mode: Implement a reader mode that strips away clutter like ads and popups from web pages, presenting users with clean, readable text. WebKit can help parse and render content in a reader-friendly format.
-
 // JavaScript Console: Integrate a JavaScript console for advanced users or developers. This would allow users to run JavaScript commands directly on the current web page.
 
 // Web Animations API: Utilize WebKit's support for the Web Animations API to create interactive, animated user interfaces.
