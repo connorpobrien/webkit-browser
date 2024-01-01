@@ -44,7 +44,7 @@ struct PlatformWebView: UIViewRepresentable {
                 self.loadableURL = nil // Reset the loadableURL to prevent reloading
             }
         }
-        // Implement zooming for ios
+        // Implement zooming for ios?
     }
 }
 #elseif os(macOS)
@@ -67,7 +67,7 @@ struct PlatformWebView: NSViewRepresentable {
                 self.loadableURL = nil // Reset the loadableURL to prevent reloading
             }
         }
-        nsView.pageZoom = pageZoom // Update page zoom
+        nsView.pageZoom = pageZoom
     }
 }
 #endif

@@ -59,16 +59,20 @@ struct ContentView: View {
                 Button("Go", action: loadWebPage)
                 
                 Menu {
-                    ForEach(bookmarks) { bookmark in
-                        Button(action: {
-                            loadableURL = URL(string: bookmark.url)
-                        }) {
-                            Text(bookmark.title)
+                    if bookmarks.isEmpty {
+                        Text("No Bookmarks").disabled(true)
+                    } else {
+                        ForEach(bookmarks) { bookmark in
+                            Button(action: {
+                                loadableURL = URL(string: bookmark.url)
+                            }) {
+                                Text(bookmark.title)
+                            }
                         }
                     }
                 } label: {
                     Image(systemName: "book.fill")
-                }.frame(width:50)
+                }.frame(width: 50)
                 
                 Menu {
                     Button("Zoom In") {
