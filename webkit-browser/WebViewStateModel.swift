@@ -12,6 +12,7 @@ import WebKit
 class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
+    var onPageLoad: ((String) -> Void)?
     
     var webView: WKWebView = WKWebView()
 
@@ -43,6 +44,7 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward
+        onPageLoad?(webView.url?.absoluteString ?? "")
     }
     
     func setZoom(_ zoom: CGFloat) {

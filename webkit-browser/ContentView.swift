@@ -9,6 +9,12 @@ import SwiftUI
 import WebKit
 import SwiftData
 
+struct Bookmark: Identifiable, Codable {
+    var id = UUID()
+    var title: String
+    var url: String
+}
+
 struct ContentView: View {
     @State private var urlString: String = "https://www.apple.com"
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
@@ -17,7 +23,18 @@ struct ContentView: View {
     @State private var isEditingHomeURL: Bool = false
     @State private var newHomeURL: String = ""
     @State private var accentColor: Color = .blue
+    @State private var newBookmarkTitle: String = ""
+    @State private var showingAddBookmark: Bool = false
+    @State private var bookmarks: [Bookmark] = []
+    @AppStorage("bookmarks") var bookmarksData = Data()
     @StateObject private var webViewStateModel = WebViewStateModel()
+    
+    init() {
+        _webViewStateModel = StateObject(wrappedValue: WebViewStateModel())
+        webViewStateModel.onPageLoad = { [weak self] url in
+            self?.urlString = url
+        }
+    }
 
     var body: some View {
         VStack {
@@ -49,6 +66,18 @@ struct ContentView: View {
                 Button("Go", action: loadWebPage)
                 
                 Menu {
+                    ForEach(bookmarks) { bookmark in
+                        Button(action: {
+                            loadableURL = URL(string: bookmark.url)
+                        }) {
+                            Text(bookmark.title)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "book.fill")
+                }.frame(width:50)
+                
+                Menu {
                     Button("Zoom In") {
                         let newZoom = pageZoom + 0.1
                         pageZoom = newZoom
@@ -70,6 +99,9 @@ struct ContentView: View {
                             blue: .random(in: 0...1)
                         )
                     }
+                    Button("Add Bookmark") {
+                        showingAddBookmark = true
+                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }.frame(width:50)
@@ -77,6 +109,12 @@ struct ContentView: View {
             
             if isEditingHomeURL {
                 TextField("Enter new home URL", text: $newHomeURL, onCommit: updateHomeURL)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+            }
+            
+            if showingAddBookmark {
+                TextField("Enter Bookmark Title", text: $newBookmarkTitle, onCommit: addBookmark)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
             }
@@ -109,6 +147,19 @@ struct ContentView: View {
             let searchURLString = "https://www.google.com/search?q=\(searchQuery)"
             loadableURL = URL(string: searchURLString)
         }
+    }
+    
+    private func saveBookmarks() {
+        bookmarksData = (try? JSONEncoder().encode(bookmarks)) ?? Data()
+    }
+    
+    private func addBookmark() {
+        let currentURL = urlString  // Assuming urlString holds the current URL
+        let bookmark = Bookmark(title: newBookmarkTitle, url: currentURL)
+        bookmarks.append(bookmark)
+        saveBookmarks()
+        showingAddBookmark = false
+        newBookmarkTitle = ""  // Reset for next input
     }
 }
 
