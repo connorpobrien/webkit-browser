@@ -55,6 +55,7 @@ struct PlatformWebView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> WKWebView {
         let webView = webViewStateModel.webView
+        webView.navigationDelegate = webViewStateModel
         webView.pageZoom = pageZoom
         return webView
     }

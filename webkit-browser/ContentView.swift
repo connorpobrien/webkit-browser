@@ -28,13 +28,6 @@ struct ContentView: View {
     @State private var bookmarks: [Bookmark] = []
     @AppStorage("bookmarks") var bookmarksData = Data()
     @StateObject private var webViewStateModel = WebViewStateModel()
-    
-    init() {
-        _webViewStateModel = StateObject(wrappedValue: WebViewStateModel())
-        webViewStateModel.onPageLoad = { [weak self] url in
-            self?.urlString = url
-        }
-    }
 
     var body: some View {
         VStack {
@@ -154,7 +147,7 @@ struct ContentView: View {
     }
     
     private func addBookmark() {
-        let currentURL = urlString  // Assuming urlString holds the current URL
+        let currentURL = webViewStateModel.getCurrentURL() 
         let bookmark = Bookmark(title: newBookmarkTitle, url: currentURL)
         bookmarks.append(bookmark)
         saveBookmarks()
