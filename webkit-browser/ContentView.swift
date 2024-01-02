@@ -165,15 +165,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-// TODO:
-// performance metrics page
-// additional tabs
-// individual user sign in
-// translation feature
-// fun color/effect features
-// Resource Inspector: A tool for developers to inspect web page elements, scripts, network requests, and more.
-// Automated testing tool
-// Reader Mode: Implement a reader mode that strips away clutter like ads and popups from web pages, presenting users with clean, readable text. WebKit can help parse and render content in a reader-friendly format.
-// JavaScript Console: Integrate a JavaScript console for advanced users or developers. This would allow users to run JavaScript commands directly on the current web page.
-// Web Animations API: Utilize WebKit's support for the Web Animations API to create interactive, animated user interfaces.
