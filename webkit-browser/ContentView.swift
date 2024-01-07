@@ -26,99 +26,115 @@ struct ContentView: View {
     @State private var newBookmarkTitle: String = ""
     @State private var showingAddBookmark: Bool = false
     @State private var bookmarks: [Bookmark] = []
+    @State private var showPerformancePanel = false
     @AppStorage("bookmarks") var bookmarksData = Data()
     @StateObject private var webViewStateModel = WebViewStateModel()
+    @StateObject private var performanceMetricsModel = PerformanceMetricsModel()
 
     var body: some View {
-        VStack {
-            HStack{
-                Button(action: webViewStateModel.goBack) {
-                    Image(systemName: "arrow.left").imageScale(.medium)
-                }.disabled(!webViewStateModel.canGoBack)
-                
-                Button(action: webViewStateModel.goForward) {
-                    Image(systemName: "arrow.right").imageScale(.medium)
-                }.disabled(!webViewStateModel.canGoForward)
-                
-                Button(action: webViewStateModel.reload) {
-                    Image(systemName: "arrow.clockwise").imageScale(.medium)
-                }
-                
-                Button(action: goToHomePage) {
-                    Image(systemName: "house").imageScale(.medium).foregroundColor(accentColor)
-                }
-                
-                Spacer().frame(width: 10)
-                
-                TextField("Enter URL", text: $urlString)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .onSubmit {
-                        loadWebPage()
-                }.frame(minWidth: 0, maxWidth: .infinity)
-                
-                Button("Go", action: loadWebPage)
-                
-                Menu {
-                    if bookmarks.isEmpty {
-                        Text("No Bookmarks").disabled(true)
-                    } else {
-                        ForEach(bookmarks) { bookmark in
-                            Button(action: {
-                                loadableURL = URL(string: bookmark.url)
-                            }) {
-                                Text(bookmark.title)
+        ZStack{
+            VStack {
+                HStack{
+                    Button(action: webViewStateModel.goBack) {
+                        Image(systemName: "arrow.left").imageScale(.medium)
+                    }.disabled(!webViewStateModel.canGoBack)
+                    
+                    Button(action: webViewStateModel.goForward) {
+                        Image(systemName: "arrow.right").imageScale(.medium)
+                    }.disabled(!webViewStateModel.canGoForward)
+                    
+                    Button(action: webViewStateModel.reload) {
+                        Image(systemName: "arrow.clockwise").imageScale(.medium)
+                    }
+                    
+                    Button(action: goToHomePage) {
+                        Image(systemName: "house").imageScale(.medium).foregroundColor(accentColor)
+                    }
+                    
+                    Spacer().frame(width: 10)
+                    
+                    TextField("Enter URL", text: $urlString)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onSubmit {
+                            loadWebPage()
+                        }.frame(minWidth: 0, maxWidth: .infinity)
+                    
+                    Button("Go", action: loadWebPage)
+                    
+                    Menu {
+                        if bookmarks.isEmpty {
+                            Text("No Bookmarks").disabled(true)
+                        } else {
+                            ForEach(bookmarks) { bookmark in
+                                Button(action: {
+                                    loadableURL = URL(string: bookmark.url)
+                                }) {
+                                    Text(bookmark.title)
+                                }
                             }
                         }
-                    }
-                } label: {
-                    Image(systemName: "book.fill")
-                }.frame(width: 50)
+                    } label: {
+                        Image(systemName: "book.fill")
+                    }.frame(width: 50)
+                    
+                    Menu {
+                        Button("Zoom In") {
+                            let newZoom = pageZoom + 0.1
+                            pageZoom = newZoom
+                            webViewStateModel.setZoom(newZoom)
+                        }
+                        Button("Zoom Out") {
+                            let newZoom = pageZoom - 0.1
+                            pageZoom = newZoom
+                            webViewStateModel.setZoom(newZoom)
+                        }
+                        Button("Change Home URL") {
+                            isEditingHomeURL = true
+                            newHomeURL = homeURL
+                        }
+                        Button("Change Accent Color") {
+                            accentColor = Color(
+                                red: .random(in: 0...1),
+                                green: .random(in: 0...1),
+                                blue: .random(in: 0...1)
+                            )
+                        }
+                        Button("Add Bookmark") {
+                            showingAddBookmark = true
+                        }
+                        Button("Performance Metrics") {
+                            withAnimation {
+                                showPerformancePanel.toggle()
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }.frame(width:50)
+                }.padding()
                 
-                Menu {
-                    Button("Zoom In") {
-                        let newZoom = pageZoom + 0.1
-                        pageZoom = newZoom
-                        webViewStateModel.setZoom(newZoom)
-                    }
-                    Button("Zoom Out") {
-                        let newZoom = pageZoom - 0.1
-                        pageZoom = newZoom
-                        webViewStateModel.setZoom(newZoom)
-                    }
-                    Button("Change Home URL") {
-                        isEditingHomeURL = true
-                        newHomeURL = homeURL
-                    }
-                    Button("Change Accent Color") {
-                        accentColor = Color(
-                            red: .random(in: 0...1),
-                            green: .random(in: 0...1),
-                            blue: .random(in: 0...1)
-                        )
-                    }
-                    Button("Add Bookmark") {
-                        showingAddBookmark = true
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }.frame(width:50)
-            }.padding()
-            
-            if isEditingHomeURL {
-                TextField("Enter new home URL", text: $newHomeURL, onCommit: updateHomeURL)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-            }
-            
-            if showingAddBookmark {
-                TextField("Enter Bookmark Title", text: $newBookmarkTitle, onCommit: addBookmark)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-            }
-
-            // main call to load webpage
-            WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
-        }.accentColor(accentColor)
+                if isEditingHomeURL {
+                    TextField("Enter new home URL", text: $newHomeURL, onCommit: updateHomeURL)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                }
+                
+                if showingAddBookmark {
+                    TextField("Enter Bookmark Title", text: $newBookmarkTitle, onCommit: addBookmark)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                }
+                
+                if showPerformancePanel {
+                    PerformanceMetricsPanel(metricsModel: performanceMetricsModel)
+                        .transition(.move(edge: .trailing))
+                        .frame(maxWidth: 300, alignment: .trailing)
+                        .zIndex(1) // Ensure the panel is always on top
+                }
+                
+                // main call to load webpage
+                WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
+            }.accentColor(accentColor)
+        }
     }
     
     private func goToHomePage() {
