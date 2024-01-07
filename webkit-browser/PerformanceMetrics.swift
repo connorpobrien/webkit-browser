@@ -29,9 +29,11 @@ class PerformanceMetricsModel: ObservableObject {
     @Published var pageLoadTime: Double = 0.0
     @Published var DOMSize: Int = 0
     @Published var DOMNodes: Int = 0
-    @Published var DataUsage: Double = 0.0
-    @Published var TimeToFirstPaint: Double = 0.0
-    @Published var JSExecutionTime: Double = 0
+    @Published var localStorageSize: Int = 0
+    @Published var sessionStorageSize: Int = 0
+    @Published var pageLoadProgress: Double = 0.0
+    @Published var numberOfRedirects: Int = 0
+    
     
     func updateMemoryUsage() {
         var info = mach_task_basic_info()
@@ -60,14 +62,15 @@ struct PerformanceMetricsPanel: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("Performance Metrics").font(.headline)
+            MetricView(label: "Page Load Progress:", value: String(format: "%.2f%%", metricsModel.pageLoadProgress * 100))
             MetricView(label: "Memory Usage:", value: String(format: "%.2f MB", metricsModel.memoryUsage))
+            MetricView(label: "Local Storage Size:", value: "\(metricsModel.localStorageSize) bytes")
+            MetricView(label: "Session Storage Size:", value: "\(metricsModel.sessionStorageSize) bytes")
             MetricView(label: "Network Requests (approximate):", value: "\(metricsModel.networkRequests)")
             MetricView(label: "Page Load Time:", value: String(format: "%.2f s", metricsModel.pageLoadTime))
             MetricView(label: "DOM Size:", value: "\(metricsModel.DOMSize) bytes")
             MetricView(label: "DOM Nodes:", value: "\(metricsModel.DOMNodes)")
-            MetricView(label: "Data Usage:", value: String(format: "%.2f MB", metricsModel.DataUsage))
-            MetricView(label: "Time To First Paint:", value: String(format: "%.2f s", metricsModel.TimeToFirstPaint))
-            MetricView(label: "JS Execution Time:", value: String(format: "%.2f s", metricsModel.JSExecutionTime))
+            MetricView(label: "Number of Redirects:", value: "\(metricsModel.numberOfRedirects)")
         }
         .padding()
         .frame(width: 300)
