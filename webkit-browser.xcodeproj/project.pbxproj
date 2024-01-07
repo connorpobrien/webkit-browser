@@ -103,6 +103,7 @@
 		BEE4D1062B3581B900026001 /* webkit-browser */ = {
 			isa = PBXGroup;
 			children = (
+				BEEB81D72B4B2D7B0050BE91 /* PerformanceMetrics.swift */,
 				BEE4D1702B37BAFB00026001 /* WebViewStateModel.swift */,
 				BEEB81D12B4A6BF20050BE91 /* Item.swift */,
 				BEE4D16C2B363E4F00026001 /* WebView.swift */,
@@ -111,7 +112,6 @@
 				BEE4D10D2B3581BC00026001 /* Assets.xcassets */,
 				BEE4D10F2B3581BC00026001 /* webkit_browser.entitlements */,
 				BEE4D1102B3581BC00026001 /* Preview Content */,
-				BEEB81D72B4B2D7B0050BE91 /* PerformanceMetrics.swift */,
 			);
 			path = "webkit-browser";
 			sourceTree = "<group>";

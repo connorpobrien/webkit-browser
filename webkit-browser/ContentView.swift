@@ -27,6 +27,7 @@ struct ContentView: View {
     @State private var showingAddBookmark: Bool = false
     @State private var bookmarks: [Bookmark] = []
     @State private var showPerformancePanel = false
+    @State private var memoryUsageTimer: Timer?
     @AppStorage("bookmarks") var bookmarksData = Data()
     @StateObject private var webViewStateModel = WebViewStateModel()
     @StateObject private var performanceMetricsModel = PerformanceMetricsModel()
@@ -113,6 +114,7 @@ struct ContentView: View {
             
             // main call to load webpage
             WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
+        
             
             if isEditingHomeURL {
                 TextField("Enter new home URL", text: $newHomeURL, onCommit: updateHomeURL)
@@ -133,7 +135,15 @@ struct ContentView: View {
                     .zIndex(1)
             }
             
-        }.accentColor(accentColor)
+        }.onAppear {
+            self.memoryUsageTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                self.performanceMetricsModel.updateMemoryUsage()
+            }
+        }
+        .onDisappear {
+            self.memoryUsageTimer?.invalidate()
+        }
+        .accentColor(accentColor)
     }
     
     private func goToHomePage() {
