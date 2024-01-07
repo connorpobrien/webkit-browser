@@ -56,6 +56,7 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         print("Navigation started")
         navigationStartTime = Date()
+        resetNetworkRequestCount()
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -70,6 +71,9 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
                 self.performanceMetricsModel.pageLoadTime = loadTime
                 self.navigationStartTime = nil
             }
+            
+            self.evaluateDOMSize()
+            self.evaluateDOMNodes()
         }
     }
     
@@ -77,5 +81,48 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.pageZoom = zoom
         webView.reload()
     }
+    
+    func evaluateDOMSize() {
+        let jsDOMSize = "new Blob([document.documentElement.outerHTML]).size;"
+        webView.evaluateJavaScript(jsDOMSize) { [weak self] (result, error) in
+            if let size = result as? Int {
+                DispatchQueue.main.async {
+                    self?.performanceMetricsModel.DOMSize = size
+                }
+            }
+        }
+    }
+
+    func evaluateDOMNodes() {
+        let jsDOMNodes = "document.getElementsByTagName('*').length;"
+        webView.evaluateJavaScript(jsDOMNodes) { [weak self] (result, error) in
+            if let count = result as? Int {
+                DispatchQueue.main.async {
+                    self?.performanceMetricsModel.DOMNodes = count
+                }
+            }
+        }
+    }
+    
+    func incrementNetworkRequestCount() {
+        DispatchQueue.main.async {
+            self.performanceMetricsModel.networkRequests += 1
+        }
+    }
+
+    func resetNetworkRequestCount() {
+        DispatchQueue.main.async {
+            self.performanceMetricsModel.networkRequests = 0
+        }
+    }
+
+    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+        incrementNetworkRequestCount()
+    }
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        incrementNetworkRequestCount()
+    }
+
 }
 
