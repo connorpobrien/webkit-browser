@@ -29,8 +29,14 @@ struct ContentView: View {
     @State private var showPerformancePanel = false
     @State private var memoryUsageTimer: Timer?
     @AppStorage("bookmarks") var bookmarksData = Data()
-    @StateObject private var webViewStateModel = WebViewStateModel()
     @StateObject private var performanceMetricsModel = PerformanceMetricsModel()
+    @StateObject private var webViewStateModel: WebViewStateModel
+    
+    init() {
+        let performanceModel = PerformanceMetricsModel()
+        _performanceMetricsModel = StateObject(wrappedValue: performanceModel)
+        _webViewStateModel = StateObject(wrappedValue: WebViewStateModel(performanceMetricsModel: performanceModel))
+    }
 
     var body: some View {
         VStack {

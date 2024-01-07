@@ -54,16 +54,22 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("Navigation started")
         navigationStartTime = Date()
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        canGoBack = webView.canGoBack
-        canGoForward = webView.canGoForward
-        if let startTime = navigationStartTime {
-            let loadTime = Date().timeIntervalSince(startTime)
-            performanceMetricsModel.pageLoadTime = loadTime
-            navigationStartTime = nil // Reset for the next navigation
+        print("Navigation Finished")
+        DispatchQueue.main.async {
+            self.canGoBack = webView.canGoBack
+            self.canGoForward = webView.canGoForward
+
+            if let startTime = self.navigationStartTime {
+                let loadTime = Date().timeIntervalSince(startTime)
+                print("Page Load Time: \(loadTime)")
+                self.performanceMetricsModel.pageLoadTime = loadTime
+                self.navigationStartTime = nil
+            }
         }
     }
     

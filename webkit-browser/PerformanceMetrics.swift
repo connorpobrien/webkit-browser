@@ -52,6 +52,8 @@ class PerformanceMetricsModel: ObservableObject {
             print("Error with task_info(): \(kerr)")
         }
     }
+    
+    
 }
 
 struct PerformanceMetricsPanel: View {
@@ -62,7 +64,7 @@ struct PerformanceMetricsPanel: View {
             Text("Performance Metrics").font(.headline)
             MetricView(label: "Memory Usage:", value: String(format: "%.2f MB", metricsModel.memoryUsage))
             MetricView(label: "Network Requests:", value: "\(metricsModel.networkRequests)")
-            MetricView(label: "Page Load Time:", value: String(format: "%.2f s", metricsModel.pageLoadTime))
+            MetricView(label: "Page Load Time:", value: String(format: "%.6f s", metricsModel.pageLoadTime))
             MetricView(label: "DOM Size:", value: "\(metricsModel.DOMSize)")
             MetricView(label: "DOM Nodes:", value: "\(metricsModel.DOMNodes)")
             MetricView(label: "Data Usage:", value: String(format: "%.2f MB", metricsModel.DataUsage))
