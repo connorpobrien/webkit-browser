@@ -9,6 +9,7 @@
 - Customizable homepage button
 - Light/dark mode
 - Performance metrics page
+- 
 
 ## Future plans: 
 - Automated testing tools
