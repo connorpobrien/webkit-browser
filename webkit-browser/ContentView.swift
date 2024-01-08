@@ -16,7 +16,7 @@ struct Bookmark: Identifiable, Codable {
 }
 
 struct ContentView: View {
-    @State private var urlString: String = "https://www.apple.com"
+    @State public var urlString: String = "https://www.apple.com"
     @State private var loadableURL: URL? = URL(string: "https://www.apple.com")
     @State private var pageZoom: CGFloat = 0.7
     @State private var homeURL: String = "https://www.apple.com"
@@ -59,9 +59,9 @@ struct ContentView: View {
                 
                 Spacer().frame(width: 10)
                 
-                TextField("Enter URL", text: $webViewStateModel.currentURL)
+                TextField("Enter URL", text: $urlString)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .onSubmit {
+                    .onSubmit { loadWebPage()
                     }
                 
                 Button("Go", action: loadWebPage)
@@ -119,6 +119,11 @@ struct ContentView: View {
             
             // main call to load webpage
             WebView(webViewStateModel: webViewStateModel, loadableURL: $loadableURL, pageZoom: $pageZoom)
+                .onReceive(webViewStateModel.$currentURL) { currentURL in
+                    if urlString != currentURL {
+                        urlString = currentURL
+                    }
+                }
         
             
             if isEditingHomeURL {

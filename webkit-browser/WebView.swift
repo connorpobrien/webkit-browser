@@ -67,7 +67,7 @@ struct PlatformWebView: NSViewRepresentable {
                 self.loadableURL = nil // Reset the loadableURL to prevent reloading
             }
         }
-        nsView.pageZoom = pageZoom
+        nsView.pageZoom = pageZoom // Update page zoom
     }
 }
 #endif
