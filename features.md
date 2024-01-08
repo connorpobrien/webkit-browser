@@ -12,6 +12,7 @@
 
 ## Future plans: 
 - Automated testing tools
+- Enable Webkit inspector
 - Testing
 - Reader mode
 - Web Animations API: Use webkit's Web Animations API to create interactive, animated user interfaces
