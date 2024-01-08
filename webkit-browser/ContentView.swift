@@ -59,11 +59,10 @@ struct ContentView: View {
                 
                 Spacer().frame(width: 10)
                 
-                TextField("Enter URL", text: $urlString)
+                TextField("Enter URL", text: $webViewStateModel.currentURL)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .onSubmit {
-                        loadWebPage()
-                    }.frame(minWidth: 0, maxWidth: .infinity)
+                    }
                 
                 Button("Go", action: loadWebPage)
                 
@@ -175,6 +174,7 @@ struct ContentView: View {
             let searchURLString = "https://www.google.com/search?q=\(searchQuery)"
             loadableURL = URL(string: searchURLString)
         }
+        webViewStateModel.currentURL = webViewStateModel.getCurrentURL()
     }
     
     private func saveBookmarks() {

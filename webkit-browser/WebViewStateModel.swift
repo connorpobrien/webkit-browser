@@ -13,6 +13,7 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     private var navigationStartTime: Date?
+    @Published var currentURL: String = ""
     private var performanceMetricsModel = PerformanceMetricsModel()
     
     var webView: WKWebView
@@ -77,13 +78,16 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
             self.canGoBack = webView.canGoBack
             self.canGoForward = webView.canGoForward
 
+            // Update the current URL
+            self.currentURL = webView.url?.absoluteString ?? ""
+
             if let startTime = self.navigationStartTime {
                 let loadTime = Date().timeIntervalSince(startTime)
                 print("Page Load Time: \(loadTime)")
                 self.performanceMetricsModel.pageLoadTime = loadTime
                 self.navigationStartTime = nil
             }
-            
+
             self.evaluateDOMSize()
             self.evaluateDOMNodes()
             self.evaluateWebStorageUsage()
