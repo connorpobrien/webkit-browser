@@ -11,9 +11,8 @@
 - Performance metrics page
 
 ## Future plans: 
-- Enable Webkit inspector
 - Automated testing tools
-- Resource inspector: tool for developers to inspect web page elements, scripts, network requests, and more
+- Enable Webkit inspector
 - Testing
 - Reader mode
 - Web Animations API: Use webkit's Web Animations API to create interactive, animated user interfaces
