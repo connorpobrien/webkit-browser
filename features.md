@@ -8,9 +8,11 @@
 - Color accent randomizer
 - Customizable homepage button
 - Light/dark mode
+- Performance metrics page
 
 ## Future plans: 
-- Performance metrics page + automated testing tools
+- Enable Webkit inspector
+- Automated testing tools
 - Resource inspector: tool for developers to inspect web page elements, scripts, network requests, and more
 - Testing
 - Reader mode
