@@ -6,6 +6,8 @@
 //
 
 import XCTest
+import WebKit
+@testable import webkit_browser
 
 final class webkit_browserTests: XCTestCase {
 
@@ -17,19 +19,42 @@ final class webkit_browserTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testWebViewStateModelInitialization() {
+        let model = WebViewStateModel()
+        XCTAssertFalse(model.canGoBack)
+        XCTAssertFalse(model.canGoForward)
+        XCTAssertEqual(model.currentURL, "")
     }
+    
+    func testMemoryUsageUpdate() {
+        let model = PerformanceMetricsModel()
+        let expectation = XCTestExpectation(description: "Memory usage should be updated")
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+        model.updateMemoryUsage()
+
+        // Wait for a short time to allow the memory usage update to complete
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if model.memoryUsage != 0 {
+                expectation.fulfill()
+            }
         }
-    }
 
+        wait(for: [expectation], timeout: 1.5)
+
+        XCTAssertNotEqual(model.memoryUsage, 0)
+    }
+    
+    func testURLLoading() {
+        let model = WebViewStateModel()
+        let testURL = URL(string: "https://www.example.com/")!
+        model.loadRequest(URLRequest(url: testURL))
+        XCTAssertEqual(model.getCurrentURL(), testURL.absoluteString)
+    }
+    
+    func testZoomLevelChange() {
+        let model = WebViewStateModel()
+        let expectedZoom: CGFloat = 1.5
+        model.setZoom(expectedZoom)
+        XCTAssertEqual(model.webView.pageZoom, expectedZoom)
+    }
 }
