@@ -18,8 +18,9 @@ class WebViewStateModel: NSObject, ObservableObject, WKNavigationDelegate {
     var webView: WKWebView
 
     override init() {
-        self.performanceMetricsModel = PerformanceMetricsModel()
-        self.webView = WKWebView()
+        let webConfiguration = WKWebViewConfiguration()
+        self.webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        self.webView.isInspectable = true // Enable inspection
         super.init()
         webView.navigationDelegate = self
         setupProgressObserver()
