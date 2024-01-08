@@ -9,13 +9,11 @@
 - Customizable homepage button
 - Light/dark mode
 - Performance metrics page
-- 
+- Some Unittests
 
 ## Future plans: 
 - Automated testing tools
-- Enable Webkit inspector
-- Testing
 - Reader mode
-- Web Animations API: Use webkit's Web Animations API to create interactive, animated user interfaces
+- Web Animations API: Animated user interfaces
 - JavaScript Console
-- additional tabs
+- Additional tabs
