@@ -11,9 +11,9 @@ Video Demo: [Link](https://observablehq.com/d/ccd757b5ff0c4d8f)
 - Buttons (Back/Forward/Reload/Home)
 - Customizable Bookmarks
 - Performance Metrics Page
-- MacOS and iOS Support
 - Scaling
 - Color Accent Randomizer
+- MacOS and iOS Support**
 - Light/Dark Mode
 
 
