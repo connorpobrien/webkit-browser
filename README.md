@@ -2,7 +2,7 @@
 
 Simple web browser for macOS and iOS powered by webkit. Includes basic browser functionality and monitors performance metrics.
 
-Full Write Up: [link]([www.google.com](https://observablehq.com/d/ccd757b5ff0c4d8f))
+Demo/Write-up: [Link](https://observablehq.com/d/ccd757b5ff0c4d8f)
 
 ![](gifs/Intro.gif)
 
