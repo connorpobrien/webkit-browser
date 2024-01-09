@@ -4,7 +4,7 @@ Simple web browser for macOS and iOS powered by webkit. Includes basic browser f
 
 Full Write Up: [link](www.google.com)
 
-![](gifs/intro.gif)
+![](gifs/Intro.gif)
 
 # Features
 - Search (Links and Google Search)
